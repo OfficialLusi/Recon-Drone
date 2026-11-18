@@ -1,56 +1,61 @@
 # Recon Drone — Embedded & Robotics
 
-Progetto hobbistico e didattico per progettare e costruire un **robot terrestre da ricognizione a due ruote**, ispirato al drone standard di *Rainbow Six Siege*.
+A hobby robotics project to design and build a small, two-wheeled ground reconnaissance robot inspired by the standard drone in *Tom Clancy's Rainbow Six Siege*.
 
-> **Stato:** definizione dei requisiti. Non sono ancora stati scelti hardware, protocolli radio o componenti definitivi.
+**Project status:** requirements definition. No final hardware platform, wireless protocol, or components have been selected.
 
-## Obiettivo
+## Objectives
 
-Realizzare un piccolo robot alimentato a batteria, capace di:
+The robot shall:
 
-- avanzare, arretrare e ruotare sul posto;
-- ricevere comandi manuali a distanza, senza cavi;
-- acquisire e trasmettere immagini in tempo reale;
-- essere guidato anche in **FPV** (*First Person View*), usando il video della telecamera;
-- integrare due ruote motrici laterali e un telaio compatto;
-- effettuare, nella versione avanzata, un salto controllato.
+- Move forward and backward, and rotate in place in both directions.
+- Receive manual control commands over a wireless link.
+- Capture and transmit live video.
+- Support first-person-view (FPV) operation without direct visual contact.
+- Operate from an onboard battery.
+- Use a compact chassis with two side-mounted drive wheels.
+- Perform a controlled jump in the advanced version.
 
-Il progetto è anche un percorso di apprendimento di programmazione embedded, elettronica, comunicazioni, meccanica e testing.
+The project also serves as a practical introduction to embedded programming, electronics, motor control, wireless communication, mechanical design, and system testing.
 
-## Scopo e fasi
+## Development milestones
 
-1. **Fondamenti e prototipo da banco:** esperimenti su GPIO, PWM, motori e comunicazioni.
-2. **Rover controllato a vista:** guida manuale e arresto sicuro alla perdita del comando.
-3. **Rover FPV:** telecamera, trasmissione video e guida osservando lo schermo.
-4. **Replica meccanica:** carrozzeria compatta ispirata al gioco.
-5. **Versione avanzata:** meccanismo di salto, dopo la validazione del rover.
+| Milestone | Scope |
+| --- | --- |
+| M0 — Bench tests | GPIO, PWM, motor control, and communication experiments |
+| M1 — Manual rover | Remote movement control, initial line-of-sight testing, and failsafe stop |
+| M2 — FPV rover | Onboard camera, live video, and video-based driving |
+| M3 — Mechanical replica | Compact two-wheel chassis based on the game's drone |
+| M4 — Jump mechanism | Controlled jump and recovery after landing |
 
-La navigazione autonoma e l'evitamento automatico degli ostacoli sono possibili evoluzioni, **non requisiti della prima versione**.
+Autonomous navigation and obstacle avoidance are potential future extensions, not requirements for the initial complete version.
 
-## Documentazione
+## Project documentation
 
-- [Documento principale](docs/00_PROJECT_MASTER.md): requisiti approvati, ipotesi, questioni aperte e stato del progetto.
-- [Istruzioni per gli agenti](AGENTS.md): come utilizzare la repository durante le attività assistite.
-- Documenti di architettura, hardware, firmware e test verranno aggiunti quando saranno necessari.
+- [Project master document](docs/00_PROJECT_MASTER.md): approved requirements, assumptions, open decisions, and development status.
+- [Repository working instructions](AGENTS.md): engineering and documentation rules for work in this repository.
 
-## Regola di lavoro
+Design notes, decision records, hardware documentation, firmware, and tests will be added as the project develops.
 
-**Una decisione proposta non è automaticamente una decisione approvata.**
+## Decision management
 
-La repository è la fonte di verità del progetto. Le discussioni in chat possono produrre proposte, ma le decisioni definitive devono essere registrate nei documenti versionati con Git.
+A proposed solution is not an approved decision.
 
-## Stato corrente
+The files in this repository are the authoritative project record. Discussions may lead to new proposals, but approved decisions must be recorded in version-controlled documentation.
 
-- [x] Definita la visione generale.
-- [x] Confermata la guida manuale e l'integrazione FPV.
-- [x] Previsto l'uso in interni ed esterni.
-- [ ] Completare i requisiti di controllo e le prestazioni misurabili.
-- [ ] Confrontare le architetture hardware e di comunicazione.
-- [ ] Costruire il primo prototipo.
+## Current status
 
-## Avvertenza
+- [x] General project scope defined.
+- [x] Manual control and FPV operation confirmed.
+- [x] Indoor and outdoor use confirmed.
+- [ ] Complete movement-control and measurable performance requirements.
+- [ ] Evaluate system architecture and communication options.
+- [ ] Build and test the first prototype.
 
-Il dispositivo è pensato per uso hobbistico e ricognizione non invasiva. Durante le prove, utilizzare un'area controllata, rispettare la privacy altrui e progettare sempre un comportamento sicuro in caso di perdita del collegamento.
+## Safety and intended use
 
----
-**Ispirazione:** *Tom Clancy's Rainbow Six Siege* di Ubisoft. Progetto indipendente, non affiliato a Ubisoft.
+The robot is intended for hobby use in controlled environments. Tests must account for loss of control, moving components, battery safety, and the privacy of people who may appear in camera footage.
+
+## Attribution
+
+*Tom Clancy's Rainbow Six Siege* is a Ubisoft title. This is an independent, unofficial hobby project.
