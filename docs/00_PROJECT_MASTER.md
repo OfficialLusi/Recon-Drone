@@ -3,7 +3,7 @@
 | Field | Value |
 | --- | --- |
 | Project | Recon Drone — Embedded & Robotics |
-| Document version | 0.2 |
+| Document version | 0.3 |
 | Project phase | Requirements definition |
 | Last updated | 2026-11-18 |
 
@@ -34,6 +34,24 @@ The project also provides practical experience in embedded C/C++, electronics, c
 | M4 | Jump mechanism: controlled takeoff and continued operation after landing | Planned; advanced phase |
 
 Milestones define an implementation sequence, not a reduction in final project requirements.
+
+### Current progress
+
+**Completed**
+
+- General product scope established.
+- Manual remote control and FPV operation confirmed as requirements.
+- Indoor and outdoor use confirmed.
+- Controlled jumping assigned to the advanced phase.
+
+**Pending**
+
+- Specify movement input behavior and measurable performance thresholds.
+- Compare communication and control architectures.
+- Select and validate hardware.
+- Build the first bench prototype.
+
+No hardware architecture has been approved and no physical prototype has been completed.
 
 ## 3. Approved functional requirements
 
@@ -134,6 +152,18 @@ These values should be refined after the use cases, interface requirements, and 
 
 Detailed test procedures and pass/fail thresholds will be added after the corresponding requirements are finalized.
 
+### Intended use and safety constraints
+
+The robot is intended for hobby development and operation in controlled environments. The implementation and test plan must address:
+
+- Safe behavior when remote commands stop arriving.
+- Moving components and pinch points, particularly in the future jump mechanism.
+- Suitable electrical protection and battery charging practices.
+- Privacy of people who may be recorded by the camera.
+- Applicable radio requirements for the selected communication hardware.
+
+These constraints do not replace detailed hazard analysis or test procedures, which will be developed with the relevant subsystems.
+
 ## 9. Decision log
 
 | Date | Decision or conclusion | Status |
@@ -152,6 +182,10 @@ Detailed test procedures and pass/fail thresholds will be added after the corres
 1. Define the movement input model: fixed-speed/digital commands or proportional control.
 2. Agree on measurable minimum performance for FPV, control response, and runtime.
 3. Compare candidate architectures against those requirements before selecting components.
+
+## 11. Attribution
+
+*Tom Clancy's Rainbow Six Siege* is a Ubisoft title. Recon Drone is an independent, unofficial hobby project.
 
 ## Document maintenance
 
