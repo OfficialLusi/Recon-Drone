@@ -8,7 +8,7 @@ Il progetto è un hobby e un percorso di apprendimento per una persona che sta r
 
 ## Fonti e priorità
 
-1. Leggi \`docs/00_PROJECT_MASTER.md\` prima di discutere modifiche architetturali, scegliere componenti o proporre nuove funzionalità.
+1. Leggi `docs/00_PROJECT_MASTER.md` prima di discutere modifiche architetturali, scegliere componenti o proporre nuove funzionalità.
 2. Considera **approvate** solo le decisioni indicate esplicitamente come tali nel documento principale.
 3. Contrassegna tutte le altre idee come **proposta**, **ipotesi da verificare** oppure **questione aperta**.
 4. Se trovi incoerenze fra documenti, segnala il conflitto: non modificarne silenziosamente il significato.
@@ -37,6 +37,6 @@ Il progetto è un hobby e un percorso di apprendimento per una persona che sta r
 
 - Aggiorna i documenti pertinenti quando viene approvata una decisione.
 - Mantieni stabili gli identificatori dei requisiti; se necessario, segnala deprecazioni e sostituzioni.
-- Quando saranno necessari, crea ADR (*Architecture Decision Records*) in \`docs/decisions/\` per decisioni con alternative e compromessi significativi.
+- Quando saranno necessari, crea ADR (*Architecture Decision Records*) in `docs/decisions/` per decisioni con alternative e compromessi significativi.
 - Non riscrivere le decisioni passate come se fossero state approvate prima della loro effettiva conferma.
 - Evita commit di credenziali, token, password, dati personali o altri segreti.
