@@ -1,42 +1,44 @@
-# AGENTS.md — Recon Drone
+# Repository Instructions — Recon Drone
 
-## Contesto
+## Project context
 
-Questa repository contiene il progetto **Recon Drone — Embedded & Robotics**, un robot terrestre a due ruote ispirato al drone da ricognizione standard di *Rainbow Six Siege*.
+Recon Drone — Embedded & Robotics is a hobby project to build a compact, two-wheeled ground reconnaissance robot inspired by the standard drone in *Rainbow Six Siege*.
 
-Il progetto è un hobby e un percorso di apprendimento per una persona che sta riprendendo la programmazione di sistemi e parte con conoscenze iniziali di elettronica e embedded.
+The project is also a learning exercise in embedded systems and electronics. Explanations should assume introductory experience and build up technical detail as needed.
 
-## Fonti e priorità
+## Source of truth
 
-1. Leggi `docs/00_PROJECT_MASTER.md` prima di discutere modifiche architetturali, scegliere componenti o proporre nuove funzionalità.
-2. Considera **approvate** solo le decisioni indicate esplicitamente come tali nel documento principale.
-3. Contrassegna tutte le altre idee come **proposta**, **ipotesi da verificare** oppure **questione aperta**.
-4. Se trovi incoerenze fra documenti, segnala il conflitto: non modificarne silenziosamente il significato.
-5. Non assumere che il contenuto delle altre conversazioni ChatGPT sia automaticamente aggiornato. Usa la versione presente su GitHub e, quando rilevante, indica il commit o la versione consultata.
+1. Read [docs/00_PROJECT_MASTER.md](docs/00_PROJECT_MASTER.md) before proposing architecture changes, selecting components, or implementing features.
+2. Treat a decision as approved only when the project master explicitly marks it as approved.
+3. Distinguish approved requirements from proposals, working assumptions, and unresolved questions.
+4. Report conflicting documentation rather than silently choosing one interpretation.
+5. Use the current repository state as the authoritative record. Prior chat messages may be incomplete or outdated.
 
-## Metodo di progettazione
+## Engineering workflow
 
-- Parti dai requisiti e dai criteri di verifica prima di scegliere un'implementazione.
-- Spiega il perché delle decisioni e i principali compromessi tecnici.
-- Preferisci piccoli esperimenti riproducibili e test indipendenti per ciascun sottosistema.
-- Mantieni separati controllo motori, comunicazione di comando, acquisizione video e logica di sicurezza.
-- Quando una modifica coinvolge più sottosistemi, esplicita le dipendenze.
-- Evita di acquistare o selezionare componenti definitivi prima di averne verificato compatibilità elettrica, meccanica e software.
-- Mantieni le spiegazioni didattiche e progressive, senza dare per scontata esperienza avanzata.
+- Define the requirement and acceptance criteria before selecting an implementation.
+- Record design alternatives and relevant trade-offs.
+- Prefer small, reproducible experiments with independent tests.
+- Keep motor control, command communication, video acquisition, and safety handling as separate concerns.
+- Identify dependencies when a change affects multiple subsystems.
+- Check electrical, mechanical, and software compatibility before recommending components.
+- Explain embedded and electronics concepts directly; do not assume specialist knowledge.
 
-## Sicurezza
+## Safety
 
-- Il robot deve fermare i motori alla perdita o scadenza dei comandi.
-- Prova i motori inizialmente con le ruote sollevate e alimentazioni adeguate.
-- Non alimentare i motori direttamente dai GPIO.
-- Preferisci batterie e caricabatterie commerciali protetti e compatibili.
-- Tratta il meccanismo di salto come un sottoprogetto da valutare e testare separatamente.
-- Rispetta la privacy delle persone riprese dalla telecamera e le regole applicabili all'uso di apparati radio.
+- The robot must stop its motors when valid control commands are lost or expire.
+- Perform initial motor tests with drive wheels off the ground.
+- Do not drive motors directly from microcontroller GPIO pins.
+- Use properly protected batteries and compatible chargers.
+- Treat the jump mechanism as a separate mechanical and safety design problem.
+- Respect privacy and applicable radio regulations.
 
-## Documentazione e modifiche
+## Documentation conventions
 
-- Aggiorna i documenti pertinenti quando viene approvata una decisione.
-- Mantieni stabili gli identificatori dei requisiti; se necessario, segnala deprecazioni e sostituzioni.
-- Quando saranno necessari, crea ADR (*Architecture Decision Records*) in `docs/decisions/` per decisioni con alternative e compromessi significativi.
-- Non riscrivere le decisioni passate come se fossero state approvate prima della loro effettiva conferma.
-- Evita commit di credenziali, token, password, dati personali o altri segreti.
+- Write all repository documentation in **English**.
+- Use clear, concise technical language. Avoid emojis, promotional wording, unnecessary enthusiasm, and generic assistant-style prose.
+- Use stable requirement identifiers. Document superseded requirements explicitly.
+- Record significant architectural decisions as ADRs (Architecture Decision Records) when the alternatives and consequences warrant it.
+- Update relevant documentation when a decision is approved.
+- Do not present unconfirmed proposals as established design choices.
+- Do not commit credentials, access tokens, passwords, personal data, or other secrets.
