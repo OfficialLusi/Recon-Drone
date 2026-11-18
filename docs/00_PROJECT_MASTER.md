@@ -1,147 +1,161 @@
-# 00 — Documento principale del progetto
+# Project Master Document
 
-**Progetto:** Recon Drone — Embedded & Robotics  
-**Versione del documento:** 0.1  
-**Stato:** definizione dei requisiti  
-**Ultimo aggiornamento:** 2026-11-18
-
-> Questa è la fonte di verità per **requisiti, decisioni e questioni aperte**. Le proposte non diventano decisioni finché non vengono esplicitamente approvate.
->
-> Gli identificatori in questa prima versione sono **normalizzati** per evitare duplicazioni emerse durante la discussione preliminare. Da questa versione in poi restano stabili.
-
-## 1. Visione
-
-Progettare e realizzare un **robot terrestre mobile (UGV)** compatto, ispirato al drone standard di *Rainbow Six Siege*.
-
-Il robot avrà **due ruote motrici laterali**, sarà alimentato a batteria, riceverà **comandi manuali a distanza** e trasmetterà **video in tempo reale**. Il controllo **FPV** (guida tramite le immagini della telecamera, senza necessità di vedere direttamente il robot) è un requisito obbligatorio.
-
-Una versione finale avanzata dovrà includere un **salto controllato**. La navigazione autonoma rimane un possibile ampliamento futuro.
-
-Il progetto ha inoltre uno scopo didattico: imparare programmazione embedded in C/C++, elettronica, protocolli di comunicazione, controllo motori, meccanica, integrazione e testing.
-
-## 2. Ambito e priorità
-
-| Fase | Traguardo | Stato |
-| --- | --- | --- |
-| M0 — Fondamenti | Sperimentazione al banco su I/O, controllo motori e comunicazioni | Pianificato |
-| M1 — Rover manuale | Avanza, arretra, ruota e si arresta in sicurezza; controllo inizialmente a vista | Pianificato |
-| M2 — Rover FPV | Trasmette video e può essere guidato guardando lo schermo | Pianificato |
-| M3 — Replica meccanica | Corpo compatto a due ruote laterali con aspetto ispirato al gioco | Pianificato |
-| M4 — Salto | Salto controllato e ripresa del funzionamento dopo l'atterraggio | Pianificato, avanzato |
-
-La suddivisione in fasi non modifica i requisiti finali: serve a realizzarli e verificarli progressivamente.
-
-## 3. Requisiti funzionali approvati
-
-| ID | Requisito | Fase minima |
-| --- | --- | --- |
-| RF-01 | Il robot deve muoversi in avanti. | M1 |
-| RF-02 | Il robot deve muoversi all'indietro. | M1 |
-| RF-03 | Il robot deve poter ruotare sul posto in entrambe le direzioni. | M1 |
-| RF-04 | Il robot deve ricevere comandi remoti tramite collegamento wireless, senza cavi verso l'operatore. | M1 |
-| RF-05 | Il robot deve acquisire immagini tramite una telecamera integrata. | M2 |
-| RF-06 | Il robot deve trasmettere immagini in tempo reale all'operatore. | M2 |
-| RF-07 | Il robot deve operare con alimentazione a batteria. | M1 |
-| RF-08 | In caso di perdita o scadenza dei comandi validi, il robot deve arrestare i motori entro un intervallo di sicurezza da definire. | M1 |
-| RF-09 | Nella versione avanzata, il robot deve poter effettuare un salto controllato. | M4 |
-| RF-10 | La guida ordinaria deve essere completamente manuale: i movimenti dipendono dai comandi dell'operatore. | M1 |
-| RF-11 | Il robot deve poter essere guidato in modalità FPV, osservando il video e senza contatto visivo diretto. | M2 |
-
-**Nota:** l'arresto automatico di sicurezza (RF-08) è consentito e obbligatorio anche nella modalità di guida manuale.
-
-### Funzioni non ancora approvate come obbligatorie
-
-- Controllo proporzionale di velocità e sterzata, anziché comandi a velocità fissa.
-- Curve durante l'avanzamento o la retromarcia (auspicabili, ma da definire formalmente).
-- Accelerazione e decelerazione progressive.
-- Telemetria della batteria e qualità del collegamento.
-- Navigazione autonoma, percorsi predefiniti ed evitamento automatico degli ostacoli: **possibili sviluppi successivi**, fuori dall'ambito iniziale.
-
-## 4. Aspetti fisici concordati
-
-| ID | Descrizione | Stato |
-| --- | --- | --- |
-| RM-01 | Corpo compatto e trasportabile. | Obiettivo confermato; dimensioni da definire |
-| RM-02 | Due ruote motrici laterali. | Confermato |
-| RM-03 | Telecamera integrata nel corpo. | Confermato |
-| RM-04 | Elettronica e batteria a bordo. | Confermato |
-| RM-05 | Aspetto finale riconoscibile e ispirato al drone del gioco. | Confermato; fedeltà estetica da specificare |
-| RM-06 | Protezione di componenti ed elettronica durante l'uso previsto. | Obiettivo da dettagliare |
-
-**Questione meccanica aperta:** due ruote laterali non garantiscono da sole la stabilità. Dovremo valutare geometria, eventuale punto di appoggio aggiuntivo e comportamento durante salto e atterraggio.
-
-## 5. Scenario operativo
-
-- **Ambienti:** interni ed esterni — **confermato**.
-- **Terreno iniziale:** superfici generalmente regolari con piccole irregolarità — **ipotesi di progetto non bloccante**, da affinare nella fase meccanica.
-- **Ostacoli maggiori, erba, ghiaia:** da valutare successivamente, non requisiti iniziali.
-- **Pioggia, acqua, polvere e condizioni climatiche:** prestazioni ancora da specificare; non presumere impermeabilità.
-- **Prove iniziali:** controllo a vista in ambiente controllato.
-- **Uso finale:** controllo FPV obbligatorio.
-
-## 6. Requisiti prestazionali ancora da concordare
-
-**Nessuno dei valori nella tabella seguente è ancora un vincolo approvato.** Sono ipotesi discusse da confermare mediante analisi e prove.
-
-| Metrica | Ipotesi iniziale | Stato |
-| --- | --- | --- |
-| Autonomia | Almeno 15 minuti | Non approvata |
-| Portata di controllo | Almeno 10 metri | Non approvata |
-| Risoluzione video | Almeno 640 × 480 | Non approvata |
-| Fluidità video | Almeno 15 fps | Non approvata |
-| Latenza video | Inferiore a 300 ms | Non approvata |
-| Tempo massimo per arresto in assenza di comandi | 500 ms | Non approvata |
-| Velocità massima | Da definire | Aperto |
-| Dimensioni e massa | Da definire | Aperto |
-| Altezza e ripetibilità del salto | Da definire | Aperto |
-
-## 7. Decisioni tecniche aperte
-
-| Tema | Decisione |
+| Field | Value |
 | --- | --- |
-| Microcontrollore e processore | Da selezionare. ESP32-S3 discusso come piattaforma didattica, **non scelto definitivamente**. |
-| Canale di controllo | Da valutare: Wi-Fi, ESP-NOW, radiocomando RC o altra soluzione. |
-| Canale video | Da scegliere; può essere condiviso o separato dal controllo. |
-| Dispositivo operatore | Da scegliere: PC, smartphone, gamepad, radiocomando o combinazione. |
-| Motori, driver e ruote | Da dimensionare dopo i requisiti meccanici e prestazionali. |
-| Camera e video | Da definire in base a latenza, ingombro, alimentazione e qualità. |
-| Batteria e regolatori | Da dimensionare dopo la stima dei consumi. |
-| Materiale e costruzione del telaio | Da valutare. |
-| Meccanismo di salto | Da progettare come sottosistema avanzato. |
+| Project | Recon Drone — Embedded & Robotics |
+| Document version | 0.2 |
+| Project phase | Requirements definition |
+| Last updated | 2026-11-18 |
 
-**Principio architetturale:** il protocollo radio è una **scelta implementativa**, non un requisito funzionale. Il software di controllo motori dovrebbe rimanere il più possibile indipendente dal canale di comunicazione.
+This document is the authoritative record of project requirements, approved decisions, assumptions, and open issues.
 
-## 8. Verifiche previste
+**Decision rule:** a proposed design is not approved until its status is explicitly recorded as approved.
 
-| ID | Verifica |
-| --- | --- |
-| TV-01 | Il robot esegue avanti, indietro, rotazione in entrambi i versi e arresto sotto controllo manuale. |
-| TV-02 | I comandi funzionano senza collegamento fisico all'operatore. |
-| TV-03 | La perdita dei comandi provoca l'arresto entro la soglia che verrà approvata. |
-| TV-04 | L'operatore può percorrere un tracciato semplice guardando solo il flusso video, in un'area di prova sicura. |
-| TV-05 | L'alimentazione a batteria garantisce il funzionamento per il tempo minimo che verrà approvato. |
-| TV-06 | La versione finale avanzata esegue un salto e rimane operativa dopo l'atterraggio. |
+Requirement IDs were normalized in version 0.1 to resolve duplicates in the initial design notes. IDs should remain stable from this point onward.
 
-I test saranno completati con procedure e soglie quantitative quando i rispettivi requisiti saranno definiti.
+## 1. Project scope
 
-## 9. Registro delle decisioni
+Design and build a compact unmanned ground vehicle (UGV) inspired by the standard reconnaissance drone in *Rainbow Six Siege*.
 
-| Data | Decisione / conferma | Stato |
+The vehicle will use two side-mounted drive wheels, carry its own battery, accept remote manual commands, and transmit live camera footage. FPV operation—driving using the video feed without direct line of sight—is a mandatory capability.
+
+The advanced final version shall include a controlled jump. Autonomous navigation is outside the initial scope and may be considered later.
+
+The project also provides practical experience in embedded C/C++, electronics, communications, motor control, mechanical design, integration, and testing.
+
+## 2. Development milestones
+
+| ID | Milestone | Status |
 | --- | --- | --- |
-| 2026-11 | Progetto di un robot terrestre a due ruote laterali ispirato al drone standard del gioco. | Approvato |
-| 2026-11 | Movimento avanti/indietro, rotazione sul posto e controllo remoto. | Approvato |
-| 2026-11 | Acquisizione e trasmissione video; guida FPV obbligatoria nel risultato finale. | Approvato |
-| 2026-11 | Guida completamente manuale; eventuale autonomia solo in futuro. | Approvato |
-| 2026-11 | Uso previsto in interni ed esterni. | Approvato |
-| 2026-11 | Piccole irregolarità del terreno come riferimento iniziale, non vincolo bloccante. | Provvisorio |
-| 2026-11 | Salto come obiettivo della versione finale avanzata. | Approvato |
-| 2026-11 | Wi-Fi e ESP32-S3 non sono ancora decisioni definitive. | Aperto |
+| M0 | Bench experiments: digital I/O, PWM, motor control, and communication | Planned |
+| M1 | Manual rover: forward/reverse movement, rotation, wireless control, and failsafe stop; initially tested in direct view | Planned |
+| M2 | FPV rover: onboard camera, live video, and driving through the video feed | Planned |
+| M3 | Mechanical replica: compact chassis with two side-mounted wheels and a recognizable game-inspired design | Planned |
+| M4 | Jump mechanism: controlled takeoff and continued operation after landing | Planned; advanced phase |
 
-## 10. Prossime decisioni
+Milestones define an implementation sequence, not a reduction in final project requirements.
 
-1. Definire **come l'operatore comanda movimento e velocità** (comandi discreti o proporzionali).
-2. Concordare alcune **prestazioni minime misurabili**, soprattutto per FPV e autonomia.
-3. Derivare le alternative architetturali dai requisiti, senza anticipare scelte di componenti.
+## 3. Approved functional requirements
 
----
-**Manutenzione:** aggiornare questo documento quando una decisione viene approvata; registrare le scelte architetturali significative in documenti ADR dedicati quando necessario.
+| ID | Requirement | Earliest milestone |
+| --- | --- | --- |
+| RF-01 | The robot shall move forward. | M1 |
+| RF-02 | The robot shall move backward. | M1 |
+| RF-03 | The robot shall rotate in place in both directions. | M1 |
+| RF-04 | The robot shall receive operator commands over a wireless link, with no physical control cable. | M1 |
+| RF-05 | The robot shall capture images through an onboard camera. | M2 |
+| RF-06 | The robot shall transmit live images to the operator. | M2 |
+| RF-07 | The robot shall operate from an onboard battery. | M1 |
+| RF-08 | The robot shall stop its motors when valid commands are lost or expire, within a safety timeout yet to be specified. | M1 |
+| RF-09 | The advanced final version shall perform a controlled jump. | M4 |
+| RF-10 | Normal operation shall be manually controlled; movement is initiated by operator commands. | M1 |
+| RF-11 | The robot shall support FPV driving using the camera feed without direct visual contact. | M2 |
+
+The automatic safety stop required by RF-08 is compatible with the manual-operation requirement in RF-10. It is not autonomous navigation.
+
+### Candidate functionality not yet approved
+
+- Proportional throttle and steering instead of fixed-speed commands.
+- Curved paths during forward or reverse movement.
+- Acceleration and deceleration ramps.
+- Battery status and radio-link telemetry.
+- Autonomous paths and obstacle avoidance, which are potential later extensions.
+
+These items must not be treated as mandatory requirements without further discussion.
+
+## 4. Mechanical and physical requirements
+
+| ID | Description | Status |
+| --- | --- | --- |
+| RM-01 | Compact, portable body | Objective confirmed; dimensions pending |
+| RM-02 | Two side-mounted drive wheels | Approved |
+| RM-03 | Camera integrated into the body | Approved |
+| RM-04 | Electronics and battery carried onboard | Approved |
+| RM-05 | Final appearance recognizably inspired by the game's drone | Approved; visual fidelity pending |
+| RM-06 | Chassis protection for components during intended use | To be specified |
+
+**Open mechanical issue:** two side-mounted wheels alone do not necessarily provide static stability. Chassis geometry, a possible additional contact point, and behavior during jumping and landing require evaluation.
+
+## 5. Operating environment
+
+| Topic | Current definition | Status |
+| --- | --- | --- |
+| Use locations | Indoor and outdoor environments | Approved |
+| Initial terrain | Mostly regular surfaces with small irregularities | Working assumption; not a blocking constraint |
+| Rough ground, gravel, and grass | Outside the initial target; may be evaluated later | Open |
+| Water, rain, dust, and adverse weather | Environmental resistance not specified; do not assume the enclosure is weatherproof | Open |
+| Initial testing | Manual, direct line-of-sight operation in a controlled area | Approved approach |
+| Final driving mode | FPV must be supported | Approved |
+
+## 6. Performance targets under discussion
+
+**The figures below are preliminary suggestions, not approved specifications.** They will require confirmation and testing.
+
+| Metric | Preliminary target | Status |
+| --- | --- | --- |
+| Runtime | At least 15 minutes | Not approved |
+| Control range | At least 10 m | Not approved |
+| Video resolution | At least 640 × 480 | Not approved |
+| Video frame rate | At least 15 fps | Not approved |
+| Video latency | Below 300 ms | Not approved |
+| Maximum command-loss stopping time | 500 ms | Not approved |
+| Maximum ground speed | To be defined | Open |
+| Overall dimensions and mass | To be defined | Open |
+| Jump height and repeatability | To be defined | Open |
+
+These values should be refined after the use cases, interface requirements, and system constraints have been agreed.
+
+## 7. Open technical decisions
+
+| Topic | Status |
+| --- | --- |
+| Main controller | Not selected. ESP32-S3 was discussed as a learning platform, not adopted as the final controller. |
+| Command radio | Not selected. Wi-Fi, ESP-NOW, RC radio systems, and other options remain candidates. |
+| Video transmission | Not selected. Video and control may share a link or use separate links. |
+| Operator interface | Not selected. PC, smartphone, gamepad, RC transmitter, or a combination remain possible. |
+| Motors, drivers, and wheels | Pending mechanical and performance requirements. |
+| Camera and video processing | Pending latency, size, power, and image-quality requirements. |
+| Battery and power regulation | Pending a power budget. |
+| Chassis material and construction | Not selected. |
+| Jump actuator and mechanism | To be developed in the advanced phase. |
+
+**Architecture principle:** the wireless protocol is an implementation decision, not a functional requirement. The motor-control logic should not depend directly on the selected communication transport.
+
+## 8. Planned acceptance tests
+
+| ID | Test |
+| --- | --- |
+| TV-01 | Execute forward, reverse, rotation in both directions, and stop under manual control. |
+| TV-02 | Receive control commands without a cable between the operator and robot. |
+| TV-03 | Stop the motors after command loss within the subsequently approved timeout. |
+| TV-04 | Navigate a simple test course using only the live video feed, in a controlled and safe area. |
+| TV-05 | Operate from the onboard battery for the subsequently approved minimum runtime. |
+| TV-06 | In the advanced version, perform a jump and remain operational after landing. |
+
+Detailed test procedures and pass/fail thresholds will be added after the corresponding requirements are finalized.
+
+## 9. Decision log
+
+| Date | Decision or conclusion | Status |
+| --- | --- | --- |
+| 2026-11 | Build a two-wheeled ground robot inspired by the standard game drone. | Approved |
+| 2026-11 | Require forward/reverse movement, rotation in place, and remote operation. | Approved |
+| 2026-11 | Require onboard camera, live video, and FPV operation in the final system. | Approved |
+| 2026-11 | Use manual driving; consider autonomous operation only as a later extension. | Approved |
+| 2026-11 | Target both indoor and outdoor environments. | Approved |
+| 2026-11 | Use surfaces with minor irregularities as the initial mechanical reference, without making this a blocking constraint. | Provisional |
+| 2026-11 | Include controlled jumping in the advanced final version. | Approved |
+| 2026-11 | Do not commit to Wi-Fi or ESP32-S3 as final design choices yet. | Open |
+
+## 10. Next decisions
+
+1. Define the movement input model: fixed-speed/digital commands or proportional control.
+2. Agree on measurable minimum performance for FPV, control response, and runtime.
+3. Compare candidate architectures against those requirements before selecting components.
+
+## Document maintenance
+
+- Update this document when a decision is approved or a requirement changes.
+- Keep approved requirements separate from unresolved design proposals.
+- Use ADRs for significant architectural choices when multiple approaches have meaningful trade-offs.
+- Write all project documentation in English, using concise and neutral technical language.
