@@ -3,7 +3,7 @@
 | Field | Value |
 | --- | --- |
 | Project | Recon Drone — Embedded & Robotics |
-| Document version | 1.0 |
+| Document version | 0.10 |
 | Project phase | Requirements definition |
 | Last updated | 2026-11-23 |
 
@@ -222,6 +222,8 @@ These constraints do not replace detailed hazard analysis or test procedures, wh
 *Tom Clancy's Rainbow Six Siege* is a Ubisoft title. Recon Drone is an independent, unofficial hobby project.
 
 ## Document maintenance
+
+**Versioning:** use `0.x` revisions during design and prototyping (for example, `0.10`, `0.11`, `0.12`). Reserve version `1.0` for when a working robot has been built and its operation verified. Revisions are sequential identifiers, not decimal fractions.
 
 - Update this document when a decision is approved or a requirement changes.
 - Keep approved requirements separate from unresolved design proposals.
