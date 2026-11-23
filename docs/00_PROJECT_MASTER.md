@@ -3,7 +3,7 @@
 | Field | Value |
 | --- | --- |
 | Project | Recon Drone — Embedded & Robotics |
-| Document version | 0.9 |
+| Document version | 1.0 |
 | Project phase | Requirements definition |
 | Last updated | 2026-11-23 |
 
@@ -27,8 +27,8 @@ The project also provides practical experience in embedded C/C++, electronics, c
 
 | ID | Milestone | Status |
 | --- | --- | --- |
-| M0 | ESP32-based bench experiments: digital I/O, PWM, motor control, and communication | Planned |
-| M1 | ESP32-based manual rover: forward/reverse movement, rotation, wireless control, and failsafe stop; initially tested in direct view, without camera hardware | Planned |
+| M0 | Raspberry Pi Pico 2 WH (RP2350) bench experiments: digital I/O, PWM, motor control, and communication | Planned |
+| M1 | Raspberry Pi Pico 2 WH-based manual rover: forward/reverse movement, rotation, wireless control, and failsafe stop; initially tested in direct view, without camera hardware | Planned |
 | M2 | Extend the working manual rover with camera and supporting video electronics; enable live video and driving through the video feed | Planned |
 | M3 | Mechanical replica: compact chassis with two side-mounted wheels and a recognizable game-inspired design | Planned |
 | M4 | Jump mechanism: controlled takeoff and continued operation after landing | Planned; advanced phase |
@@ -37,7 +37,7 @@ Milestones define an implementation sequence, not a reduction in final project r
 
 ### Initial implementation approach
 
-- Use an ESP32-family microcontroller as the movement controller for M0/M1. Select the exact ESP32 variant and development board after evaluating I/O, motor-control peripherals, firmware tooling, physical size, and expansion needs.
+- Use a Raspberry Pi Pico 2 WH development board (RP2350 with onboard wireless and pre-soldered headers) as the initial movement controller for M0/M1. The board has been selected for the prototype but has not yet been purchased or validated.
 - Build and validate the powered, remotely operated two-wheel rover before integrating any camera hardware.
 - Keep locomotion and safety logic on the movement controller when video is added in M2, rather than requiring a controller replacement.
 - Introduce the camera and its supporting video electronics in M2. Video processing and transmission may be implemented by a separate module or another suitable arrangement; neither the topology nor the wireless protocol is approved yet.
@@ -56,12 +56,12 @@ Milestones define an implementation sequence, not a reduction in final project r
 **Pending**
 
 - Define measurable performance thresholds, operator input characteristics, acceleration-ramp timing, and safe direction-reversal thresholds.
-- Select the exact ESP32 development board for the M0/M1 motion controller and choose an initial wireless command path.
+- Acquire and validate the selected Raspberry Pi Pico 2 WH for M0/M1; choose and test an initial wireless command path.
 - Keep video architecture selection for M2, after the manual rover is operational.
 - Select and validate hardware.
 - Build the first bench prototype.
 
-The initial architecture direction (ESP32-family movement controller first; camera and video electronics later) has been approved. The exact controller board, radio protocol, motor hardware, and video architecture have not been selected. No physical prototype has been completed.
+The initial architecture direction (Pico 2 WH as movement controller first; camera and video electronics later) has been approved. The controller has been selected for the first prototype, but the radio protocol, motor hardware, and video architecture remain open. No physical prototype has been completed.
 
 ## 3. Approved functional requirements
 
@@ -141,7 +141,7 @@ These values should be refined after the use cases, interface requirements, and 
 
 | Topic | Status |
 | --- | --- |
-| Main controller | ESP32 family approved as the starting movement-control platform for M0/M1 and retained for motion control in M2. Specific chip and board remain open; ESP32-S3-DevKitC-1 is a candidate, not a final selection. |
+| Main controller | Raspberry Pi Pico 2 WH (RP2350) selected as the movement controller for M0/M1 and intended to remain responsible for motion and safety in M2. Previously approved ESP32-family direction superseded on 2026-11-23. Board purchase and physical validation pending. |
 | Command radio | Not selected. Wi-Fi, ESP-NOW, RC radio systems, and other options remain candidates. |
 | Video transmission | Deferred until M2. Camera hardware, video processing, and transmission remain open; video and command communication may share a link or use separate links. |
 | Operator interface | Not selected. PC, smartphone, gamepad, RC transmitter, or a combination remain possible. |
@@ -207,11 +207,12 @@ These constraints do not replace detailed hazard analysis or test procedures, wh
 | 2026-11-23 | Releasing movement controls to neutral shall command an immediate stop without a deceleration ramp (RF-14); electronic braking method remains undecided. | Approved |
 | 2026-11-23 | Reducing a nonzero throttle request in the same direction shall update the drive command without software deceleration ramp (RF-15). | Approved |
 | 2026-11-23 | Require controlled motor direction reversal conditioned on wheel speed (RF-16). Encoder or sensorless estimation is not yet selected. | Approved |
-| 2026-11-23 | Implement motion control first on an ESP32-family MCU (M0/M1); add camera and video electronics only after the manually controlled rover works (M2), retaining the movement controller. Exact ESP32 board and video architecture remain open. | Approved implementation sequence |
+| 2026-11-23 | Implement motion control first on an ESP32-family MCU (M0/M1); add camera and video electronics only after the manually controlled rover works (M2), retaining the movement controller. Exact ESP32 board and video architecture remain open. | Superseded: controller changed to RP2350; milestone sequence retained |
+| 2026-11-23 | Select Raspberry Pi Pico 2 WH (RP2350, wireless, pre-soldered headers) as the initial locomotion controller; retain M1-first/M2-video-later sequence. Wireless command protocol and video subsystem remain undecided. | Approved; hardware not yet validated |
 
 ## 10. Next decisions
 
-1. Select a specific ESP32 development board for M0/M1 based on available GPIO, PWM peripherals, potential encoder inputs, debugging interfaces, and anticipated expansion.
+1. Purchase and validate the selected Raspberry Pi Pico 2 WH; set up the Pico SDK in C/C++ and carry out initial GPIO/PWM bench tests.
 2. Select the M1 command-link architecture and a minimal operator input method, without yet selecting the M2 video display or transmission technology.
 3. Plan the motor driver, power supply, and the first bench tests; refine acceleration-ramp parameters and safe direction-reversal implementation.
 4. Revisit camera, video performance, and FPV architecture after the manual rover is functional.
