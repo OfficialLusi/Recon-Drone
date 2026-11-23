@@ -3,9 +3,9 @@
 | Field | Value |
 | --- | --- |
 | Project | Recon Drone — Embedded & Robotics |
-| Document version | 0.3 |
+| Document version | 0.4 |
 | Project phase | Requirements definition |
-| Last updated | 2026-11-18 |
+| Last updated | 2026-11-23 |
 
 This document is the authoritative record of project requirements, approved decisions, assumptions, and open issues.
 
@@ -46,7 +46,7 @@ Milestones define an implementation sequence, not a reduction in final project r
 
 **Pending**
 
-- Specify movement input behavior and measurable performance thresholds.
+- Define measurable performance thresholds and input-device characteristics. (Proportional movement control has been approved.)
 - Compare communication and control architectures.
 - Select and validate hardware.
 - Build the first bench prototype.
@@ -68,13 +68,12 @@ No hardware architecture has been approved and no physical prototype has been co
 | RF-09 | The advanced final version shall perform a controlled jump. | M4 |
 | RF-10 | Normal operation shall be manually controlled; movement is initiated by operator commands. | M1 |
 | RF-11 | The robot shall support FPV driving using the camera feed without direct visual contact. | M2 |
+| RF-12 | The robot shall support proportional control of forward/reverse motion and steering, including steering while moving. The operator shall be able to request intermediate drive levels rather than only fixed-speed movement. | M1 |
 
 The automatic safety stop required by RF-08 is compatible with the manual-operation requirement in RF-10. It is not autonomous navigation.
 
 ### Candidate functionality not yet approved
 
-- Proportional throttle and steering instead of fixed-speed commands.
-- Curved paths during forward or reverse movement.
 - Acceleration and deceleration ramps.
 - Battery status and radio-link telemetry.
 - Autonomous paths and obstacle avoidance, which are potential later extensions.
@@ -131,6 +130,7 @@ These values should be refined after the use cases, interface requirements, and 
 | Command radio | Not selected. Wi-Fi, ESP-NOW, RC radio systems, and other options remain candidates. |
 | Video transmission | Not selected. Video and control may share a link or use separate links. |
 | Operator interface | Not selected. PC, smartphone, gamepad, RC transmitter, or a combination remain possible. |
+| Motor drive method | PWM-based modulation is the selected initial approach for variable motor output; the exact driver topology and control electronics remain open. |
 | Motors, drivers, and wheels | Pending mechanical and performance requirements. |
 | Camera and video processing | Pending latency, size, power, and image-quality requirements. |
 | Battery and power regulation | Pending a power budget. |
@@ -138,6 +138,8 @@ These values should be refined after the use cases, interface requirements, and 
 | Jump actuator and mechanism | To be developed in the advanced phase. |
 
 **Architecture principle:** the wireless protocol is an implementation decision, not a functional requirement. The motor-control logic should not depend directly on the selected communication transport.
+
+**PWM design note:** PWM is the planned actuator-control technique, not the functional requirement itself. Changing PWM duty cycle controls the effective electrical drive delivered through a suitable motor driver; it does not by itself guarantee a particular wheel speed under varying load. Closed-loop speed regulation, feedback sensors, PWM frequency, resolution, and motor driver selection are not yet specified. PWM shall not be used to power a motor directly from a microcontroller GPIO.
 
 ## 8. Planned acceptance tests
 
@@ -149,6 +151,7 @@ These values should be refined after the use cases, interface requirements, and 
 | TV-04 | Navigate a simple test course using only the live video feed, in a controlled and safe area. |
 | TV-05 | Operate from the onboard battery for the subsequently approved minimum runtime. |
 | TV-06 | In the advanced version, perform a jump and remain operational after landing. |
+| TV-07 | Verify that neutral, intermediate, and full-range operator movement/steering commands produce appropriately varied drive commands; confirm PWM outputs at the motor-driver interface during bench testing. |
 
 Detailed test procedures and pass/fail thresholds will be added after the corresponding requirements are finalized.
 
@@ -176,10 +179,12 @@ These constraints do not replace detailed hazard analysis or test procedures, wh
 | 2026-11 | Use surfaces with minor irregularities as the initial mechanical reference, without making this a blocking constraint. | Provisional |
 | 2026-11 | Include controlled jumping in the advanced final version. | Approved |
 | 2026-11 | Do not commit to Wi-Fi or ESP32-S3 as final design choices yet. | Open |
+| 2026-11-23 | Require proportional operator control of movement and steering (RF-12). | Approved |
+| 2026-11-23 | Use PWM-based motor drive as the initial control approach; specific motors and drivers remain to be selected. | Approved technical approach |
 
 ## 10. Next decisions
 
-1. Define the movement input model: fixed-speed/digital commands or proportional control.
+1. Define the operator input device and desired acceleration/deceleration response, without assuming a specific controller.
 2. Agree on measurable minimum performance for FPV, control response, and runtime.
 3. Compare candidate architectures against those requirements before selecting components.
 
