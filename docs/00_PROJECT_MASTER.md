@@ -3,7 +3,7 @@
 | Field | Value |
 | --- | --- |
 | Project | Recon Drone — Embedded & Robotics |
-| Document version | 0.7 |
+| Document version | 0.8 |
 | Project phase | Requirements definition |
 | Last updated | 2026-11-23 |
 
@@ -46,7 +46,7 @@ Milestones define an implementation sequence, not a reduction in final project r
 
 **Pending**
 
-- Define measurable performance thresholds, operator input characteristics, and acceleration-ramp timing. (Proportional control, progressive acceleration, and direct reductions of requested drive are approved.)
+- Define measurable performance thresholds, operator input characteristics, acceleration-ramp timing, and safe direction-reversal thresholds.
 - Compare communication and control architectures.
 - Select and validate hardware.
 - Build the first bench prototype.
@@ -72,12 +72,12 @@ No hardware architecture has been approved and no physical prototype has been co
 | RF-13 | The robot shall apply progressive acceleration when increasing the requested drive level, limiting abrupt increases in motor drive commands during normal operation. The ramp rate shall be defined and validated later. | M1 |
 | RF-14 | When the operator releases the movement controls to neutral (zero throttle and zero steering), the robot shall immediately command zero drive output, bypassing any normal motion ramp. | M1 |
 | RF-15 | When the operator reduces a nonzero throttle request without changing direction, the firmware shall apply the lower drive request without a software deceleration ramp. The resulting change in wheel speed is determined by the physical system. | M1 |
+| RF-16 | The robot shall prevent immediate reversal of motor drive direction while the corresponding wheel is rotating above a defined speed threshold. Reverse acceleration shall begin only after the required safe reversal condition has been met. | M1 |
 
 The automatic safety stop required by RF-08 is compatible with the manual-operation requirement in RF-10. It is not autonomous navigation.
 
 ### Candidate functionality not yet approved
 
-- Behavior during direction reversals (not yet specified).
 - Battery status and radio-link telemetry.
 - Autonomous paths and obstacle avoidance, which are potential later extensions.
 
@@ -120,6 +120,7 @@ These items must not be treated as mandatory requirements without further discus
 | Video latency | Below 300 ms | Not approved |
 | Maximum command-loss stopping time | 500 ms | Not approved |
 | Acceleration ramp duration or maximum drive-command slew rate | To be defined | Open |
+| Safe wheel-speed threshold for motor reversal | To be defined | Open |
 | Maximum ground speed | To be defined | Open |
 | Overall dimensions and mass | To be defined | Open |
 | Jump height and repeatability | To be defined | Open |
@@ -135,6 +136,7 @@ These values should be refined after the use cases, interface requirements, and 
 | Video transmission | Not selected. Video and control may share a link or use separate links. |
 | Operator interface | Not selected. PC, smartphone, gamepad, RC transmitter, or a combination remain possible. |
 | Motor drive method | PWM-based modulation is the selected initial approach for variable motor output; the exact driver topology and control electronics remain open. |
+| Direction-reversal feedback | Motor reversal is gated by a safe wheel-speed condition (RF-16). Encoder feedback, back-EMF estimation, current-based estimation, and timing models remain candidates; none is selected. |
 | Motors, drivers, and wheels | Pending mechanical and performance requirements. |
 | Camera and video processing | Pending latency, size, power, and image-quality requirements. |
 | Battery and power regulation | Pending a power budget. |
@@ -143,7 +145,7 @@ These values should be refined after the use cases, interface requirements, and 
 
 **Architecture principle:** the wireless protocol is an implementation decision, not a functional requirement. The motor-control logic should not depend directly on the selected communication transport.
 
-**Motion ramp design note:** RF-13 applies to increases in the normal commanded motor drive level, including startup. Its implementation may adjust PWM duty cycle gradually. It does not by itself guarantee a fixed physical acceleration under different loads. RF-14 requires an immediate transition of the drive command to neutral when all movement controls are released; this does not guarantee that the moving robot stops physically at that instant. The choice between active electronic braking and coasting remains open and depends on the motor and driver architecture. Under RF-15, a lower nonzero throttle request is applied without an explicit software deceleration ramp. A reduction in PWM duty cycle does not imply a proportional reduction in wheel speed; the speed response also depends on motor back-EMF, driver freewheeling/braking behavior, load, traction, and terrain. Behavior during direction reversals remains to be defined. A safety stop required by RF-08 must also bypass the normal acceleration ramp; physical stopping distance and time must be tested.
+**Motion ramp design note:** RF-13 applies to increases in the normal commanded motor drive level, including startup. Its implementation may adjust PWM duty cycle gradually. It does not by itself guarantee a fixed physical acceleration under different loads. RF-14 requires an immediate transition of the drive command to neutral when all movement controls are released; this does not guarantee that the moving robot stops physically at that instant. The choice between active electronic braking and coasting remains open and depends on the motor and driver architecture. Under RF-15, a lower nonzero throttle request is applied without an explicit software deceleration ramp. A reduction in PWM duty cycle does not imply a proportional reduction in wheel speed; the speed response also depends on motor back-EMF, driver freewheeling/braking behavior, load, traction, and terrain. Under RF-16, a direction reversal must wait for a safe wheel-speed condition. The measurement or estimation method, speed threshold, stopping strategy, timeout, and behavior when feedback is unavailable remain to be specified. A safety stop required by RF-08 must also bypass the normal acceleration ramp; physical stopping distance and time must be tested.
 
 **PWM design note:** PWM is the planned actuator-control technique, not the functional requirement itself. Changing PWM duty cycle controls the effective electrical drive delivered through a suitable motor driver; it does not by itself guarantee a particular wheel speed under varying load. Closed-loop speed regulation, feedback sensors, PWM frequency, resolution, and motor driver selection are not yet specified. PWM shall not be used to power a motor directly from a microcontroller GPIO.
 
@@ -161,6 +163,7 @@ These values should be refined after the use cases, interface requirements, and 
 | TV-08 | Apply a step increase in requested drive from rest and between intermediate levels; measure a progressive rise in commanded motor drive instead of a single abrupt step. Verify separately that a simulated command-loss safety stop is not delayed by the acceleration ramp. |
 | TV-09 | During movement, release all movement controls to neutral and verify that the firmware immediately commands neutral motor output without a deceleration ramp. Measure physical stopping behavior separately once the motor driver and chassis are available. |
 | TV-10 | Reduce a nonzero throttle request while maintaining direction (e.g., from 100% to 40%) and verify that the firmware updates the requested motor drive without a software deceleration ramp. Measure actual wheel speed separately during hardware testing. |
+| TV-11 | Request reversal while a wheel is rotating above the agreed safe threshold; verify that opposite-direction drive is inhibited until the safe wheel-speed condition is met. Define measurement method and pass/fail thresholds before testing. |
 
 Detailed test procedures and pass/fail thresholds will be added after the corresponding requirements are finalized.
 
@@ -193,10 +196,11 @@ These constraints do not replace detailed hazard analysis or test procedures, wh
 | 2026-11-23 | Require progressive acceleration for normal increases in motor drive command (RF-13), with ramp parameters to be defined. | Approved |
 | 2026-11-23 | Releasing movement controls to neutral shall command an immediate stop without a deceleration ramp (RF-14); electronic braking method remains undecided. | Approved |
 | 2026-11-23 | Reducing a nonzero throttle request in the same direction shall update the drive command without software deceleration ramp (RF-15). | Approved |
+| 2026-11-23 | Require controlled motor direction reversal conditioned on wheel speed (RF-16). Encoder or sensorless estimation is not yet selected. | Approved |
 
 ## 10. Next decisions
 
-1. Define acceleration-ramp parameters, direction-reversal behavior, and the operator input device without assuming a specific controller.
+1. Define acceleration-ramp parameters, direction-reversal speed threshold and speed-estimation method, and the operator input device without assuming a specific controller.
 2. Agree on measurable minimum performance for FPV, control response, and runtime.
 3. Compare candidate architectures against those requirements before selecting components.
 
